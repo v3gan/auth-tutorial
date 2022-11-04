@@ -1,6 +1,20 @@
-import React from 'react';
+import React, {useSyncExternalStore} from 'react';
+import PropTypes from 'prop-types';
 
-export default function Login() {
+async function loginUser(credentials) {
+  return fetch('http://localhost:8080/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials),
+  })
+  .then(data => data.json());
+}
+
+export default function Login({setToken}) {
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
   return(
     <div className="login-wrapper">
         <h1>Please Log In</h1>
@@ -19,4 +33,8 @@ export default function Login() {
         </form>
     </div>
   )
+}
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
 }
