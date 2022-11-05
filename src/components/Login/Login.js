@@ -1,5 +1,7 @@
-import React, {useSyncExternalStore} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+
+import './Login.css';
 
 async function loginUser(credentials) {
   return fetch('http://localhost:8080/login', {
@@ -15,10 +17,20 @@ async function loginUser(credentials) {
 export default function Login({setToken}) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = await loginUser({
+      username,
+      password
+    });
+    setToken(token);
+  }
+
   return(
     <div className="login-wrapper">
         <h1>Please Log In</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>
             <p>Username</p>
             <input type="text" />
